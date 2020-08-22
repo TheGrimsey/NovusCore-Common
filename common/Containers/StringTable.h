@@ -36,10 +36,12 @@ public:
 
     size_t GetNumStrings() { return _strings.size(); }
 
-    void Serialize(Bytebuffer& bytebuffer);
-    void Deserialize(Bytebuffer& bytebuffer);
+    void Serialize(Bytebuffer* bytebuffer);
+    void Deserialize(Bytebuffer* bytebuffer);
 
     void CopyFrom(StringTable& other);
+
+    void Clear();
 
 private:
     bool TryFindHashedString(u32 hash, u32& index);
