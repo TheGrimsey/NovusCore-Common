@@ -1,6 +1,6 @@
 /*
 # MIT License
-# Copyright(c) 2020 NovusCore
+# Copyright(c) 2018-2020 NovusCore
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files(the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
@@ -18,38 +18,18 @@
 # SOFTWARE.
 */
 #pragma once
-#include "../NovusTypes.h"
-#include <vector>
-#include <robin_hood.h>
-#include <shared_mutex>
+#include <NovusTypes.h>
 
-class Bytebuffer;
-
-class StringTable
+namespace Memory
 {
-public:
-    StringTable() { }
+    namespace MemoryTracker
+    {
+        void InitMemoryTracker();
+        void SetCurrentFrameIndex(u32 frameIndex);
 
-    // Add string, return index into table
-    u32 AddString(const std::string& string);
-
-    const std::string& GetString(u32 index);
-    u32 GetStringHash(u32 index);
-
-    size_t GetNumStrings() const { return _strings.size(); }
-
-    void Serialize(Bytebuffer* bytebuffer) const;
-    void Deserialize(Bytebuffer* bytebuffer);
-
-    void CopyFrom(StringTable& other);
-
-    void Clear();
-
-    bool TryFindHashedString(u32 hash, u32& index) const;
-
-private:
-    std::vector<std::string> _strings;
-    std::vector<u32> _hashes;
-
-    std::shared_mutex _mutex;
+        size_t GetMemoryUsage();
+        size_t GetMemoryUsagePeak();
+        size_t GetMemoryAvailable();
+        size_t GetMemoryBudget();
+    };
 };
